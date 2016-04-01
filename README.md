@@ -5,7 +5,7 @@ Akira Aida - 100526064
 
 Melvin Cheng - 100526486
 
-Truyen Truong - 
+Truyen Truong - 100516976 
 
 ####Front End Used (Shotokan Tigers)
 
