@@ -24,12 +24,13 @@ Account::Account() {
   paybill_limit_remaining["CQ"] = 2000.0;
   paybill_limit_remaining["TV"] = 2000.0;
   held_funds = 0.0;
+  charged = 0.0;
 }
 
 void Account::PrintBalance() const {
   assert(balance >= 0.0);
   printf("Available Balance (%d):\n", number);
-  PrintMoney(std::abs(balance));
+  PrintMoney(std::abs(balance-charged));
 }
 
 /**

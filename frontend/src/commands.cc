@@ -203,16 +203,15 @@ void Commands::withdrawal() {
   float transaction_charge =
       is_admin_ ? 0.0 : GetTransactionCharge(name, number);
   float debit = amount + transaction_charge;
-  if (account->balance - debit <= -0.01) {
-    std::cout << ERROR_BALANCE_INSUFFICIENT << std::endl; // Very generalized error message atm, may want to break the error cases down?
-                                                  // Errors for not mod 5/10/20/100 and not enough money
+  if (account->balance - (debit + account->charged)  <= -0.01) {
+    std::cout << ERROR_BALANCE_INSUFFICIENT << std::endl; 
+                                                 
   } else if (!is_admin_ && account->withdrawal_limit_remaining < amount) {
     std::cout << ERROR_MESSAGE_HIT_WITHDRAWAL_LIMIT << std::endl;
   } else { // perform withdrawal
     PushTransactionRecord(1, name, number, amount);
-    if(transaction_charge > 0.0)
-      PushTransactionRecord(1, name, number, transaction_charge);
-    account->balance -= debit;
+    account->balance -= amount;
+    account->charged += transaction_charge;
     if(account->balance < 0.0 && account->balance > -0.01)
       account->balance = 0.0;
     std::cout << SUCCESS_WITHDRAWAL << std::endl;
@@ -328,27 +327,25 @@ void Commands::transfer() {
       return;
     }
     
-
     // check transfer limit
     double charge = is_admin_ ? 0.0 : GetTransactionCharge(name, number);
     if (account->transfer_limit_remaining < amount) {
       std::cout << ERROR_MESSAGE_HIT_TRANSFER_LIMIT << std::endl;
-    } else if (account->balance < (amount + charge)) {
+    } else if (account->balance < (amount + charge + account->charged)) {
       std::cout << ERROR_BALANCE_INSUFFICIENT << std::endl;
     } else if (recipient_account->balance + recipient_account->held_funds
-               + amount > 99999.99) {
+               + amount - recipient_account->charged > 99999.99) {
       std::cout << ERROR_BALANCE_CAP_EXCEEDED << std::endl;
     } else {
       // perform deduction
-      account->balance -= amount + charge;
+      account->balance -= amount;
       recipient_account->balance += amount;
       account->transfer_limit_remaining -= amount;
+      account->charged += charge;
 
       // create transaction records
       PushTransactionRecord(2, name, number, amount);
       PushTransactionRecord(2, recipient_name, recipient_number, amount);
-      if(!is_admin_)
-        PushTransactionRecord(1, name, number, charge);
 
       // did it
       std::cout << SUCCESS_TRANSFER << std::endl;
@@ -417,11 +414,12 @@ void Commands::paybill() {
   // check transfer limit
   if (!is_admin_ && account->paybill_limit_remaining[company] < amount) {
     std::cout << ERROR_MESSAGE_HIT_PAYBILL_LIMIT << std::endl;
-  } else if (account->balance - (amount + charge) <= -0.01) {
+  } else if (account->balance - (amount + charge + account->charged) <= -0.01) {
     std::cout << ERROR_BALANCE_INSUFFICIENT << std::endl;
   } else {
     // do it
-    account->balance -= amount + charge;
+    account->balance -= amount;
+    account->charged += charge;
     if(account->balance < 0.0 && account->balance > -0.01)
       account->balance = 0.0;
     if(!is_admin_)
@@ -429,8 +427,6 @@ void Commands::paybill() {
     
     // print out transaction
     PushTransactionRecord(3, name, account_number, amount, company);
-    if(!is_admin_)
-      PushTransactionRecord(1, name, account_number, charge);
     std::cout << SUCCESS_PAYBILL << std::endl;
   }
 
@@ -479,19 +475,16 @@ void Commands::deposit() {
   }
   double transaction_charge =
     is_admin_ ? 0.0 : GetTransactionCharge(name, number);
-  if (account->balance < transaction_charge) {
+  if (account->balance < (transaction_charge + account->charged)) {
     std::cout << ERROR_BALANCE_INSUFFICIENT << std::endl;
   } else if (account->balance + account->held_funds + amount
-             - transaction_charge > 99999.99) {
+             - transaction_charge - account->charged > 99999.99) {
     std::cout << ERROR_BALANCE_CAP_EXCEEDED << std::endl;
   } else {
     // finish up
     account->held_funds += amount;
-    account->balance -= transaction_charge;
+    account->charged += transaction_charge;
     PushTransactionRecord(4, name, number, amount);
-    if (!is_admin_) {
-      PushTransactionRecord(1, name, number, transaction_charge);
-    }
     std::cout << SUCCESS_DEPOSIT << std::endl;
   }
   

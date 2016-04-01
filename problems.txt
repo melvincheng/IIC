@@ -1,0 +1,11 @@
+Write down any changes to the source that we'd need to include in the report such as problems we found in the front/back.
+
+Front
+- A transaction charge was being applied in the front end
+    - Removed the transaction fee that was being put into the trans files
+    - Added a variable to store the accounts' total transaction charges
+        - withdrawal
+        - transfer
+        - paybill
+        - deposit
+Back
