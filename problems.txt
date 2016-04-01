@@ -9,3 +9,9 @@ Front
         - paybill
         - deposit
 Back
+
+output masterfile changed to dynamic
+parsing input and output changed: occurance comes before plan
+hashmap changed to treemap
+count now actually increases
+daily limit implemented
