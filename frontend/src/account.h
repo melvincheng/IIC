@@ -98,6 +98,12 @@ class Account {
   double transfer_limit_remaining;
 
   /**
+  * The amount the person will be charged in the backend so the balance - charged
+  * can't go into the negatives
+  **/
+  double charged;
+
+  /**
   * Reset at each day; Number of dollars that may be paid to each company this
   * day.
   **/
