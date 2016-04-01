@@ -1,6 +1,8 @@
 /**
  * This class reads a transaction file and parses each transaction in the transaction file
  */
+package backend.src;
+
 import java.util.Vector;
 import java.io.*;
 

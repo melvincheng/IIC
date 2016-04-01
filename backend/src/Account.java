@@ -1,6 +1,9 @@
 /**
  * This class holds data for individual accounts
  */
+
+package backend.src;
+
 public class Account{
   private int id; 			// account number
   private String name; 		// account holder's full name

@@ -3,5 +3,6 @@
 *.swp
 *.atf
 *.aout
+*.class
 transactions.txt
 tempCons.txt

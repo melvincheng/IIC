@@ -1,11 +1,12 @@
 /**
 * This class is used to reads the master account file and writes a new master account file
 */
+package backend.src;
 
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Set;
-import java.util.HashSet;
+import java.util.SortedSet;
 import java.io.*;
 
 public class AccountIO{
@@ -28,7 +29,7 @@ public class AccountIO{
   public Map<Integer,Account> readFile(){
     try{
       // initialize our map object to hold our accounts
-      Map<Integer,Account> accounts = new HashMap<Integer,Account>();
+      Map<Integer,Account> accounts = new TreeMap<Integer,Account>();
 
       // helper variables for file parsing
       String input;
@@ -65,20 +66,20 @@ public class AccountIO{
         }
 
         // parse the account balance
-        token = input.substring(29,36);
+        token = input.substring(29,37);
         balance = Float.parseFloat(token);
 
+        // parse the total amount of transactions
+        token = input.substring(38,42);
+        trans = Integer.parseInt(token);
+
         // parse the plan flag
-        token = input.substring(38,39);
+        token = input.substring(43,44);
         if((token.compareTo("N")) == 0){
           student = false;
         }else{
           student = true;
         }
-
-        // parse the total amount of transactions
-        token = input.substring(41,44);
-        trans = Integer.parseInt(token);
 
         // create an account object storing parsed information
         // add it to the map
@@ -89,7 +90,7 @@ public class AccountIO{
       // return the map
       return accounts;
     }catch(Exception e){
-      System.err.println("ERROR: Cannot open file to read");
+      System.err.println("ERROR: "+e+" with master file");
       return null;
     }
   }
@@ -102,7 +103,7 @@ public class AccountIO{
     */
     try{
       // declare file variables
-      File master = new File("MasterAccount.txt");
+      File master = new File(this.filename);
       File current = new File("CurrentAccounts.txt");
 
       // create writer objects
@@ -137,26 +138,25 @@ public class AccountIO{
 
           // create formatted string for current accounts file
           curroutf = String.format("%05d %20s %1s %08.2f %1s",
-          currAccount.getId(),
-          currAccount.getName(),
-          active,
-          currAccount.getBalance(),
-          plan);
+            currAccount.getId(),
+            currAccount.getName(),
+            active,
+            currAccount.getBalance(),
+            plan);
 
           // create formatted string for master accounts file
-          mastoutf = String.format("%05d %20s %1s %08.2f %1s %04d",
-          currAccount.getId(),
-          currAccount.getName(),
-          active,
-          currAccount.getBalance(),
-          plan,
-          currAccount.getCount());
-
+          mastoutf = String.format("%05d %-20s %1s %08.2f %04d %1s",
+            currAccount.getId(),
+            currAccount.getName(),
+            active,
+            currAccount.getBalance(),
+            currAccount.getCount(),
+            plan);
           // print to file if it's NOT end of file account
           if(currAccount.getId() != 0){
-          currentpw.println(curroutf);
-          masterpw.println(mastoutf);
-        }else{
+            currentpw.println(curroutf);
+            masterpw.println(mastoutf);
+          }else{
             currEOF = curroutf;
             mastEOF = mastoutf;
           }
@@ -170,7 +170,7 @@ public class AccountIO{
       currentpw.close();
       masterpw.close();
     }catch (Exception e){
-      
+
     }
   }
 }

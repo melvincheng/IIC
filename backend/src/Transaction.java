@@ -2,6 +2,8 @@
  * This class holds data for each individual transaction
  */
 
+package backend.src;
+
 public class Transaction{
   private byte transCode; // transaction code of the transaction
   private String transName; // account holder's name for the transaction

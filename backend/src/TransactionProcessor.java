@@ -1,6 +1,7 @@
 /**
  * This class is used to process the data that was parsed by the transactionIO and accountIO
  */
+package backend.src;
 
 import java.util.Vector;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class TransactionProcessor{
     }
     // loops through all the transactions
     // once all the transactions are processed, the function return
+    Account account;
     for(int i = 0;i < transactions.size();i++){
       trans = transactions.elementAt(i);
       transId = trans.getTransId();
@@ -95,6 +97,9 @@ public class TransactionProcessor{
       if(!successful){
         System.out.print("Transaction "+i+"\n");
         successful = true;
+      }else{
+        account = accounts.get(trans.getTransId());
+        account.incCount();
       }
     }
     actio.writeFile(accounts);

@@ -16,6 +16,8 @@
 * 2) a new Current Accounts File for the frontend
 **************************/
 
+package backend.src;
+
 public class Bank{
   public static void main(String[] args) {
     System.out.println("Backend start");
