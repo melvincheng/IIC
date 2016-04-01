@@ -2,7 +2,7 @@
  * This class holds data for individual accounts
  */
 
-package backend.src;
+package backend;
 
 public class Account{
   private int id; 			// account number

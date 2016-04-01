@@ -2,7 +2,7 @@
  * This class holds data for each individual transaction
  */
 
-package backend.src;
+package backend;
 
 public class Transaction{
   private byte transCode; // transaction code of the transaction

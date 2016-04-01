@@ -1,7 +1,7 @@
 /**
  * This class is used to process the data that was parsed by the transactionIO and accountIO
  */
-package backend.src;
+package backend;
 
 import java.util.Vector;
 import java.util.Map;
