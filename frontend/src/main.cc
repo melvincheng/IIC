@@ -43,7 +43,7 @@
 * Input: accounts.txt
 * Output: transactions.txt
 * Usage: make
-* Usage: .\frontend.exe accounts.txt
+* Usage: ./frontend.exe accounts.txt
 **/
 int main(int argc, const char* argv[]) {
     // commands
