@@ -83,6 +83,8 @@ int main(int argc, const char* argv[]) {
         commands.changeplan();
       } else if (user_cmd.compare("logout") == 0) {
         commands.logout();
+      } else if (user_cmd.compare("exit") == 0) {
+        exit(0); 
       } else {
         std::cout << ERROR_MESSAGE_INVALID_COMMAND << std::endl;
       }
