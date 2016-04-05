@@ -1,0 +1,20 @@
+JAVAC=javac
+sources = backend/Account.java\
+ backend/Transaction.java\
+ backend/TransactionIO.java\
+ backend/AccountIO.java\
+ backend/TransactionProcessor.java\
+ backend/Bank.java
+
+classes = $(sources:.java=.class)
+
+all: $(classes)
+
+run:
+	java -cp ./backend Bank
+
+clean :
+	rm -f backend/*.class
+
+%.class : %.java
+	$(JAVAC) $<
