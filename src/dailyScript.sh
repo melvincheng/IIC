@@ -1,21 +1,25 @@
-rm finalTrans.trans
+#rm finalTrans.trans
+
+touch CurrentAccounts.txt
+touch MasterAccounts.txt
+
 frontend=frontend/frontend.exe
 if [ $# -eq 0 ] || [ $# -eq 1 ]
 	then
-	for inFile in ../tests/inputs/*.in
+	for inFile in day1.in #../tests/inputs/*.in
 	do
 		fileName=$(basename "$inFile")
-		$frontend frontend/accounts.txt ${fileName%.*}.trans < $inFile
+		$frontend CurrentAccounts.txt ${fileName%.*}.trans < $inFile
 	done;
 else
-	$frontend frontend/accounts.txt $1 < $2
+	$frontend CurrentAccounts.txt $1 < $2
 fi
 
 for transFile in *.trans;
 do 
-	cat $transFile >> finalTrans.trans
+	cat $transFile >> FinalTrans.trans
 	rm $transFile
 done;
 
-java backend.Bank masteraccounts.txt finalTrans.trans
-rm finalTrans.trans
+java backend.Bank MasterAccounts.txt FinalTrans.trans
+#rm finalTrans.trans

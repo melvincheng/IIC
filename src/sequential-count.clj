@@ -1,1 +1,0 @@
-(def distinctCount[data](count(distinct(reduce str(map str data)))))

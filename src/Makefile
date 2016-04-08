@@ -8,14 +8,12 @@ JAVA = java
 JAVASOURCES = AccountIO.java Account.java Bank.java TransactionIO.java Transaction.java TransactionProcessor.java
 
 # Change these 2 for front end input files.
-FRONTENDFILES = current transaction
+FRONTENDFILES = accounts.txt transaction
 # Change these 2 for back end input files.
 BACKENDFILES = master transaction
 
 all : 
 	@make prepare
-	@make run
-	@make clean
 
 prepare:
 	@echo "\n===== Compiling front end. ====="

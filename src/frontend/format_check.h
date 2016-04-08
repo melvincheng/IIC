@@ -78,13 +78,13 @@ enum {
 * Parses currency. If not set to nullptr, status is CurrencyError::kValid or
 * CurrencyError::kNonCanadian when the string checks out and an error otherwise. 
 **/
-double CheckCurrency(const std::string& number, int* status);
+double CheckCurrency(const std::string& number, int* status, bool create = false);
 
 /**
 * Confirms whether the error indicates a correct value when conformance to
 * canadian currency is not a constraint.
 **/
-bool NonBillValueIsValid(int error);
+bool NonBillValueIsValid(int error, double val = 1);
 
 /**
 * Checks if 'amount' is valid currency.

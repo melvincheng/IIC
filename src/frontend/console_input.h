@@ -43,7 +43,7 @@ int GetInteger();
 * e.g. FormatCheck::CurrencyError::kValid on success.
 * Return value is 0.0 on failure.
 **/
-double GetDouble(int* status);
+double GetDouble(int* status, bool create = false);
 
 } //namespace ConsoleInput
 } //namespace BankFrontEnd

@@ -499,11 +499,12 @@ void Commands::create() {
   std::string name = PromptForAccountHolderIfUnknown();
   std::cout << PROMPT_INIT_BALANCE << std::endl;
   int status;
-  double init = ConsoleInput::GetDouble(&status);
+  double init = ConsoleInput::GetDouble(&status, true);
+  //std::cout << init << std::endl;
   if (status == FormatCheck::CurrencyError::kTooLarge) {
     std::cout << ERROR_ABOVE_MAX_INIT << std::endl;
     return;
-  } else if(!FormatCheck::NonBillValueIsValid(status)) {
+  } else if(!FormatCheck::NonBillValueIsValid(status, init)) {
     std::cout << FormatCheck::GetCurrencyErrorMessage(status)
               << std::endl;
     return;

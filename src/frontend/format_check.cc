@@ -31,7 +31,7 @@
 namespace BankFrontEnd {
 namespace FormatCheck {
   
-double CheckCurrency(const std::string& number, int* status) {
+double CheckCurrency(const std::string& number, int* status, bool create) {
   // Initialize values
   double value = 0.0;
   *status = CurrencyError::kUnset;
@@ -47,7 +47,6 @@ double CheckCurrency(const std::string& number, int* status) {
       return value;
     }
   }
-  
   
   // test formatting
   std::string::size_type decimal_point_position = number.find(".");
@@ -68,9 +67,17 @@ double CheckCurrency(const std::string& number, int* status) {
   }
     
   // test value yielded
+  if(create == true && value == 0){
+    int temp = value;
+    temp = abs(temp);
+    *status = CurrencyError::kValid;
+    return temp;
+  }
+
+  int intCalc = value*100;
   if(value <= 0.0) {
     *status =  CurrencyError::kNegativeOrZero;
-  } else if (value > 99999.99) {
+  } else if (intCalc > 9999999) {
     *status =  CurrencyError::kTooLarge;
   } else if (!CheckUnit(value)) {
     *status = CurrencyError::kNonCanadian;
@@ -82,7 +89,11 @@ double CheckCurrency(const std::string& number, int* status) {
   return value;
 }
 
-bool NonBillValueIsValid(int error) {
+bool NonBillValueIsValid(int error, double val) {
+
+  if(val == 0){
+    return true;
+  }
   return error == CurrencyError::kValid || error == CurrencyError::kNonCanadian;
 }
 
@@ -96,6 +107,7 @@ bool CheckUnit(double amount) {
 
 
 std::string GetCurrencyErrorMessage(int error) {
+    
   switch(error) {
    case CurrencyError::kContainsDollarSign: {
       return ERROR_CONTAINS_DOLLAR_SIGN;
