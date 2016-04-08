@@ -70,13 +70,13 @@ public class TransactionProcessor{
         this.logged = true;
       }else if(this.logged){
         if(code == 1){
-          successful = changeBalance(true, false, trans);
+          successful = changeBalance(true, trans);
         }else if(code == 2){
           successful = transfer(trans, transactions.elementAt(i++));
         }else if(code == 3){
           successful = paybill(trans);
         }else if(code == 4){
-          successful = changeBalance(false, false, trans);
+          successful = changeBalance(false, trans);
         }else if(code == 5){
           successful = create(trans);
         }else if(code == 6){
@@ -145,6 +145,22 @@ public class TransactionProcessor{
   }
 
   /**
+   * @brief calculates the service fee
+   * @param the account used to calculate the service fee
+   * @return the calculated service fee
+   */
+  public float serviceFeeCalc(Account account){
+    float serviceFee = 0.0f;
+    if(!this.admin){
+      if(account.isStudent()){
+        serviceFee = 0.05f;
+      }else{
+        serviceFee = 0.1f;
+      }
+    }
+    return serviceFee;
+  }
+  /**
    * @brief   changes the balance of the account
    *          this is used for withdraw, deposit, transfer, and paybill
    *
@@ -154,7 +170,7 @@ public class TransactionProcessor{
    * @param trans       the corresponding transaction being processed
    * @return returns true if success, if not successful, returns false
    */
-  public boolean changeBalance(boolean increase, boolean transfer, Transaction trans){
+  public boolean changeBalance(boolean increase, Transaction trans){
     int accountId = trans.getTransId();
     float value = trans.getValue();
 
@@ -162,16 +178,7 @@ public class TransactionProcessor{
       return false;
     }
     Account account = accounts.get(accountId);
-    float serviceFee = 0.0f;
-    if(!transfer){
-      if(!this.admin){
-        if(account.isStudent()){
-          serviceFee = 0.05f;
-        }else{
-          serviceFee = 0.1f;
-        }
-      }
-    }
+    float serviceFee = serviceFeeCalc(account);
     if(increase){
       if(account.getBalance() + value - serviceFee < 0.0f){
         System.out.print("ERROR: Account has insufficient funds: ");
@@ -181,6 +188,9 @@ public class TransactionProcessor{
     }else{
       if(account.getBalance() - value - serviceFee < 0.0f){
         System.out.print("ERROR: Account has insufficient funds: ");
+        return false;
+      }else if(!account.decWithdrawLim(value) && !admin){
+        System.out.print("ERROR: Account cannot withdraw more than $500.00 in a day: ");
         return false;
       }
       account.setBalance(account.getBalance() - value - serviceFee);
@@ -207,10 +217,16 @@ public class TransactionProcessor{
     }
     Account account1 = accounts.get(accountId1);
     Account account2 = accounts.get(accountId2);
-    if(changeBalance(false, false, trans1)){
-      changeBalance(true, true, trans2);
+    float serviceFee = serviceFeeCalc(account1);
+    if(account1.getBalance() - value - serviceFee < 0.0f){
+      account1.setBalance(account1.getBalance() - value - serviceFee);
+      account2.setBalance(account2.getBalance() + value);
       return true;
+    }else if(!account1.decTransferLim(value) && !admin){
+      System.out.print("ERROR: Account cannot transfer more than $1000.00 in a day: ");
+      return false;
     }
+    System.out.print("ERROR: Account has insufficient funds: ");
     return false;
   }
 
@@ -225,15 +241,26 @@ public class TransactionProcessor{
     int accountId = trans.getTransId();
     String company = trans.getMisc();
     float value = trans.getValue();
+
+    if(!accountCheck(trans.getTransName(),accountId)){
+      return false;
+    }
+    Account account = accounts.get(accountId);
+    float serviceFee = serviceFeeCalc(account);
     if(company.equals("TV") || company.equals("EC") || company.equals("CQ")){
-      if(changeBalance(false, false, trans)){
-        return true;
+      if(account.getBalance() - value - serviceFee < 0.0f){
+        System.out.print("ERROR: Account has insufficient funds: ");
+        return false;
+      }else if(!account.decPaybillLim(value) && !admin){
+        System.out.print("ERROR: Account cannot pay more than $2000.00 worth of bills in a day: ");
+        return false;
       }
+      account.setBalance(account.getBalance() - value - serviceFee);
+      return true;
     }else{
       System.out.print("ERROR: Invalid company: ");
       return false;
     }
-    return false;
   }
 
   /**
@@ -261,7 +288,7 @@ public class TransactionProcessor{
       return false;
     }
 
-    Account account = new Account(max++, trans.getTransName(), trans.getValue(), true, false, 0);
+    Account account = new Account(max++, trans.getTransName(), trans.getValue(), true, false, 0, 500.0f, 1000.0f, 2000.0f);
     accounts.put(max++,account);
     return true;
   }

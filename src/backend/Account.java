@@ -11,18 +11,24 @@ public class Account{
   private boolean enabled; 	// flag of account if it is enabled
   private boolean student; 	// flag of account if it has a student plan
   private int count; 		// number of transactions
+  private float withdrawLim;// amount of funds the account can withdraw
+  private float transferLim;// amount of funds the account can transfer
+  private float paybillLim; // amount of funds the account can use to paybill
 
   /**
   * Constructor
   * all fields are set at construction of object
   */
-  public Account(int id, String name, float balance, boolean enabled, boolean student, int count){
+  public Account(int id, String name, float balance, boolean enabled, boolean student, int count, float withdrawLim, float transferLim, float paybillLim){
     this.id = id;
     this.name = name;
     this.balance = balance;
     this.enabled = enabled;
     this.student = student;
     this.count = count;
+    this.withdrawLim = withdrawLim;
+    this.transferLim = transferLim;
+    this.paybillLim = paybillLim;
   }
 
 
@@ -102,5 +108,60 @@ public class Account{
 	*/
 	public void incCount(){
 		count++;
+	}
+
+
+	/**	
+	 * Returns the amount of funds the account can witdraw
+	 */
+	public float getWithdrawLim(){
+		return this.withdrawLim;
+	}
+	
+	/**
+	 * Returns the amount of funds the account can transfer
+	 */
+	public float getTransferLim(){
+		return this.transferLim;
+	}
+
+	/**
+	 * Returns the amount of funds the account can use to paybill
+	 */
+	public float getPaybillLim(){
+		return this.paybillLim;
+	}
+
+	/**
+	 * Returns true if the user can withdraw else false
+	 */
+	public boolean decWithdrawLim(float amount){
+		if(this.withdrawLim < amount){
+			return false;
+		}
+		this.withdrawLim -= amount;
+		return true;
+	}
+
+	/**
+	 * Returns true if the user can transfer else false
+	 */
+	public boolean decTransferLim(float amount){
+		if(this.transferLim < amount){
+			return false;
+		}
+		this.transferLim -= amount;
+		return true;
+	}
+
+	/**
+	 * Returns true if the user can paybillLim else false
+	 */
+	public boolean decPaybillLim(float amount){
+		if(this.paybillLim < amount){
+			return false;
+		}
+		this.paybillLim -= amount;
+		return true;
 	}
 }

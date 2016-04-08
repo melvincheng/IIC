@@ -83,7 +83,7 @@ public class AccountIO{
 
         // create an account object storing parsed information
         // add it to the map
-        Account newAccount = new Account(id,name,balance,enabled,student,trans);
+        Account newAccount = new Account(id,name,balance,enabled,student,trans,500.0f,1000.0f,2000.0f);
         accounts.put(id,newAccount);
       }
 
