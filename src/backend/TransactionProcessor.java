@@ -62,9 +62,9 @@ public class TransactionProcessor{
       }else if(code == 10){
         if(this.logged){
           System.out.println("ERROR: User was already logged in: Transaction "+i);
-        }else if(trans.getMisc().equals("A")){
+        }else if(trans.getMisc().trim().equals("A")){
           this.admin = true;
-        }else if(trans.getMisc().equals("S")){
+        }else if(trans.getMisc().trim().equals("S ")){
           this.admin = false;
         }
         this.logged = true;
@@ -99,7 +99,9 @@ public class TransactionProcessor{
         successful = true;
       }else{
         account = accounts.get(trans.getTransId());
-        account.incCount();
+        if(trans.getTransId() != 0){
+          account.incCount();
+        }
       }
     }
     actio.writeFile(accounts);
