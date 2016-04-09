@@ -49,42 +49,42 @@ public class AccountIO{
         float balance;
         boolean student;
         int trans;
+        if(!input.equals("")){
+                // parse the account id
+          token = input.substring(0,5);
+          id = Integer.parseInt(token);
 
-        // parse the account id
-        token = input.substring(0,5);
-        id = Integer.parseInt(token);
+                // parse the account holder's name
+          name = input.substring(6,26).trim();
 
-        // parse the account holder's name
-        name = input.substring(6,26).trim();
+                // parse the enabled flag
+          token = input.substring(27,28);
+          if((token.compareTo("A")) == 0){
+            enabled = true;
+          }else{
+            enabled = false;
+          }
 
-        // parse the enabled flag
-        token = input.substring(27,28);
-        if((token.compareTo("A")) == 0){
-          enabled = true;
-        }else{
-          enabled = false;
-        }
+                // parse the account balance
+          token = input.substring(29,37);
+          balance = Float.parseFloat(token);
 
-        // parse the account balance
-        token = input.substring(29,37);
-        balance = Float.parseFloat(token);
+                // parse the total amount of transactions
+          token = input.substring(38,42);
+          trans = Integer.parseInt(token);
 
-        // parse the total amount of transactions
-        token = input.substring(38,42);
-        trans = Integer.parseInt(token);
-
-        // parse the plan flag
-        token = input.substring(43,44);
-        if((token.compareTo("N")) == 0){
-          student = false;
-        }else{
-          student = true;
-        }
-
+                // parse the plan flag
+          token = input.substring(43,44);
+          if((token.compareTo("N")) == 0){
+            student = false;
+          }else{
+            student = true;
+          }
         // create an account object storing parsed information
         // add it to the map
-        Account newAccount = new Account(id,name,balance,enabled,student,trans,500.0f,1000.0f,2000.0f);
-        accounts.put(id,newAccount);
+          Account newAccount = new Account(id,name,balance,enabled,student,trans,500.0f,1000.0f,2000.0f);
+          accounts.put(id,newAccount);
+        }
       }
 
       // return the map
@@ -116,8 +116,8 @@ public class AccountIO{
       String curroutf; // formatted string for current accounts file
       String mastoutf; // formatted string for master accounts file
 
-      String currEOF = "";
-      String mastEOF = "";
+      String currEOF = "00000 END_OF_FILE          A 00000.00 S";
+      String mastEOF = "00000 END_OF_FILE          A 00000.00 0000 S";
 
       for(int key:accountIds){
         currAccount = newAccounts.get(key);
@@ -137,7 +137,7 @@ public class AccountIO{
           }
 
           // create formatted string for current accounts file
-          curroutf = String.format("%05d %20s %1s %08.2f %1s",
+          curroutf = String.format("%05d %-20s %1s %08.2f %1s",
             currAccount.getId(),
             currAccount.getName(),
             active,
@@ -152,14 +152,9 @@ public class AccountIO{
             currAccount.getBalance(),
             currAccount.getCount(),
             plan);
-          // print to file if it's NOT end of file account
-          if(currAccount.getId() != 0){
-            currentpw.println(curroutf);
-            masterpw.println(mastoutf);
-          }else{
-            currEOF = curroutf;
-            mastEOF = mastoutf;
-          }
+
+          currentpw.println(curroutf);
+          masterpw.println(mastoutf);
         }
       }
 

@@ -110,7 +110,7 @@ public class Account{
 		count++;
 	}
 
-
+	
 	/**	
 	 * Returns the amount of funds the account can witdraw
 	 */
