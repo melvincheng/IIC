@@ -2,19 +2,23 @@ login
 admin
 changeplan
 Janel
-ENTER JANELS ACCOUNT NUMBER
+00006
 logout
 login
 standard
 Melvin
 withdrawal
-ENTER MELVINS ACCOUNT NUMBER
+00002
 1
 logout
 login
 admin
 delete
 Jack
-ENTER JACKS ACCOUNT NUMBER
+00007
 logout
 exit
+10 admin                00000 00000.00 A 
+00                      00000 00000.00   
+10 admin                00000 00000.00 A 
+00                      00000 00000.00   

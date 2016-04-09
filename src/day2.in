@@ -8,10 +8,13 @@ login
 standard
 Akira
 withdrawal
-ENTER AKIRAS ACCOUNT NUMBER
+00001
 10
 deposit
-ENTER AKIRAS ACCOUNT NUMBER
+00001
 50
 logout
 exit
+10 admin                00000 00000.00 A 
+05 Jack                 00000 00012.00   
+00                      00000 00000.00   

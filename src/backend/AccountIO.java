@@ -56,6 +56,9 @@ public class AccountIO{
 
                 // parse the account holder's name
           name = input.substring(6,26).trim();
+          if(name.equals("END_OF_FILE")){
+            break;
+          }
 
                 // parse the enabled flag
           token = input.substring(27,28);

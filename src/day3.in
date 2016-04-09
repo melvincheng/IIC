@@ -2,21 +2,23 @@ login
 standard
 Melvin
 transfer
-ENTER MELVINS ACCOUNT NUMBER
-ENTER AKIRAS ACCOUNT NUMBER
+00002
+00001
 8
 logout
 login
 admin
 changeplan
 Janel
-ENTER JANELS ACCOUNT NUMBER
+00006
 deposit
 Janel
-ENTER JANELS ACCOUNT NUMBER
+00006
 50
 disable
 Jasdeep
-ENTER JASDEEPS ACCOUNT NUMBER
+00003
 logout
 exit
+10 admin                00000 00000.00 A 
+00                      00000 00000.00   

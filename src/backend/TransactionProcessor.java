@@ -98,8 +98,8 @@ public class TransactionProcessor{
         System.out.print("Transaction "+i+"\n");
         successful = true;
       }else{
-        account = accounts.get(trans.getTransId());
-        if(trans.getTransId() != 0){
+        if(code!=10 && code!=0 && code!=6 && code!=5){
+          account = accounts.get(trans.getTransId());
           account.incCount();
         }
       }
@@ -220,7 +220,7 @@ public class TransactionProcessor{
     Account account1 = accounts.get(accountId1);
     Account account2 = accounts.get(accountId2);
     float serviceFee = serviceFeeCalc(account1);
-    if(account1.getBalance() - value - serviceFee < 0.0f){
+    if(account1.getBalance() - value - serviceFee > 0.0f){
       account1.setBalance(account1.getBalance() - value - serviceFee);
       account2.setBalance(account2.getBalance() + value);
       return true;
@@ -290,7 +290,7 @@ public class TransactionProcessor{
       return false;
     }
 
-    Account account = new Account(max++, trans.getTransName(), trans.getValue(), true, false, 0, 500.0f, 1000.0f, 2000.0f);
+    Account account = new Account(++max, trans.getTransName(), trans.getValue(), true, false, 0, 500.0f, 1000.0f, 2000.0f);
     accounts.put(max++,account);
     return true;
   }
