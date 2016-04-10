@@ -15,3 +15,8 @@ parsing input and output changed: occurance comes before plan
 hashmap changed to treemap
 count now actually increases
 daily limit implemented
+transfer no longer uses changebalance
+implemented service charge function
+implemented empty file check
+compares the misc value in transaction properly now
+fixed account creatation
