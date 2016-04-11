@@ -70,13 +70,13 @@ public class TransactionProcessor{
         this.logged = true;
       }else if(this.logged){
         if(code == 1){
-          successful = changeBalance(true, trans);
+          successful = changeBalance(false, trans);
         }else if(code == 2){
           successful = transfer(trans, transactions.elementAt(i++));
         }else if(code == 3){
           successful = paybill(trans);
         }else if(code == 4){
-          successful = changeBalance(false, trans);
+          successful = changeBalance(true, trans);
         }else if(code == 5){
           successful = create(trans);
         }else if(code == 6){

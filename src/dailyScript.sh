@@ -24,7 +24,7 @@ if [ $# -eq 0 ] || [ $# -eq 1 ]
 	#merges all the transaction files
 	for transFile in *.trans;
 	do 
-		cat $transFile >> $FinalTrans
+		cat $transFile >> $MergeTrans
 		#removes the transaction file that 
 		#has just been added to the merge file
 		rm $transFile
@@ -42,4 +42,4 @@ fi
 java backend.Bank MasterAccounts.txt $MergeTrans
 
 #used for testing
-# rm $FinalTrans
+# rm $MergeTrans
