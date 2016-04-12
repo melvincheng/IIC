@@ -18,8 +18,8 @@ then
     dir="daily"
     input="daily"
 else
-	dir=$1
-	input=$2
+    dir=$1
+    input=$2
 fi
 
 # Execute the frontend
