@@ -1,11 +1,13 @@
-#Creates current and master files if they do not exist
-touch CurrentAccounts.txt
-touch MasterAccounts.txt
-
 frontend=frontend/frontend.exe
 #if less that 2 arguments are passed in, run all input files in the currently directory
-if [ $# -eq 0 ] || [ $# -eq 1 ]
+if [ $# -eq 0 ] || [ $# -eq 1 ] || [ $# -eq 2 ] || [ $# -eq 3 ]
 	then
+	#Creates current and master files if they do not exist
+	touch CurrentAccounts.txt
+	master=MasterAccounts.txt
+	touch $master
+	# makes a copy of the old master file
+	cp $master oldMasterAccounts.txt
 	for inFile in *.in
 	do
 		echo $inFile
@@ -24,22 +26,28 @@ if [ $# -eq 0 ] || [ $# -eq 1 ]
 	#merges all the transaction files
 	for transFile in *.trans;
 	do 
-		cat $transFile >> $MergeTrans
+	cat $transFile >> $MergeTrans
 		#removes the transaction file that 
 		#has just been added to the merge file
 		rm $transFile
 	done;
 #if 2 or more arguments are inputted
 else
-	#uses the first argument as the transaction file and
-	#the second argument as the input file
-	$frontend CurrentAccounts.txt $1 < $2
-	#sets the name of the file used for the backend as the first argument
-	MergeTrans=$1
+
+	#First argument is the transaction file
+	#the second argument as input file
+	$frontend $2 $3 < $4
+	MergeTrans=$3
+	master=$1
+	oldMaster=${4%.*}MasterAccounts
+	cp $master $oldMaster\(before\).txt
+	path=$(dirname "$1")
 fi
 
 #runs the back end
-java backend.Bank MasterAccounts.txt $MergeTrans
+java backend.Bank $master $MergeTrans
+
+mv CurrentAccounts.txt ${path}
 
 #used for testing
 # rm $MergeTrans
